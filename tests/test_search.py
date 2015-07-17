@@ -1,6 +1,9 @@
 import unittest
+
 from selenium import webdriver
-import pages
+
+from pages import pages
+
 
 class TestSearch(unittest.TestCase):
 
@@ -10,11 +13,11 @@ class TestSearch(unittest.TestCase):
 
     def test_google_search(self):
         google = pages.GooglePage(self.driver)
-        searchresults = google.search("Red hot chili peppers")
-        self.assertIn("Red hot chili peppers".lower(), searchresults.results[2].text.lower())
-        searchresults.search_from_results_page("Nick Cave")
-        self.assertIn("Nick Cave".lower(), searchresults.results[5].text.lower())
-        self.assertNotIn("Red hot chili peppers".lower(), searchresults.results[6].text.lower())
+        searchresults = google.search_for("Red hot chili peppers")
+        assert "Red hot chili peppers".lower() in searchresults.results[2].text.lower()
+        searchresults.search_for("Nick Cave")
+        assert "Nick Cave".lower() in searchresults.results[5].text.lower()
+        assert "Red hot chili peppers".lower() not in searchresults.results[6].text.lower()
 
     def tearDown(self):
         self.driver.close()
